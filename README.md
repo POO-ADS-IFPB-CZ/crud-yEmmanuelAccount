@@ -10,4 +10,4 @@ $\quad$ Na versão final da atividade, realizar o salvamento, listagem, exclusã
 
 $\quad$ Protótipo:
 
-<img src="imgs/protótipo-crud-poo.png" alt="Descrição" width="300" height="200">
+<img src="imgs/protótipo-crud-poo.png" alt="Protótipo" width="300" height="200">
