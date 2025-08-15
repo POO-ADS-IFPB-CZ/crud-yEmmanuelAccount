@@ -4,32 +4,30 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GenericDao <T> {
+public class GenericDao<T> {
 
-    private File file;
+    private final File file;
 
     public GenericDao(String arquivo) throws IOException {
         file = new File(arquivo);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.createNewFile();
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Set<T> getAll() throws IOException, ClassNotFoundException {
-        if(file.length() != 0){
-            try(ObjectInputStream in = new ObjectInputStream(
-                    new FileInputStream(file)
-            )){
+        if (file.length() != 0) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
                 return (Set<T>) in.readObject();
             }
         }
         return new HashSet<>();
     }
 
-    public boolean salvar(T objeto) throws IOException,
-            ClassNotFoundException {
+    public boolean salvar(T objeto) throws IOException, ClassNotFoundException {
         Set<T> objetos = getAll();
-        if(objetos.add(objeto)){
+        if (objetos.add(objeto)) {
             atualizarArquivo(objetos);
             return true;
         }
@@ -38,7 +36,7 @@ public class GenericDao <T> {
 
     public boolean remover(T objeto) throws IOException, ClassNotFoundException {
         Set<T> objetos = getAll();
-        if(objetos.remove(objeto)){
+        if (objetos.remove(objeto)) {
             atualizarArquivo(objetos);
             return true;
         }
@@ -47,20 +45,16 @@ public class GenericDao <T> {
 
     public boolean atualizar(T objeto) throws IOException, ClassNotFoundException {
         Set<T> objetos = getAll();
-        if(objetos.remove(objeto) && objetos.add(objeto)){
+        if (objetos.remove(objeto) && objetos.add(objeto)) {
             atualizarArquivo(objetos);
             return true;
         }
         return false;
     }
 
-
     private void atualizarArquivo(Set<T> objetos) throws IOException {
-        try(ObjectOutputStream out = new ObjectOutputStream(
-                new FileOutputStream(file)
-        )){
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
             out.writeObject(objetos);
         }
     }
-
 }
